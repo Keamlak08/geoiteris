@@ -17,13 +17,23 @@
         maxZoom: 18,
     }).addTo(map);
 
-    fetch('/api/colleges/')
+    fetch('api/colleges/')
         .then(res => res.json())
         .then(data => {
             data.forEach(c => {
-                L.marker([c.latitude, c.longitude])
-                    .addTo(map)
-                    .bindPopup(c.name + " (" + c.count + " students)");
+                const radius = c.student_count > 0 ? Math.max(8, c.student_count * 6) : 6;
+                const count = c.student_count === 1 ? '1 student' : '${c.student} students';
+                const popup = '<span class="popup-name">${c.name}</span><span class="popup-detail">${c.location} - ${count}</span>';
+
+                L.circleMarker([c.latitude, c.longitude], {
+                    radius: radius,
+                    fillColor: '#2d4a8a',
+                    color: '#2d4a8a',
+                    weight: 1.5,
+                    fillOpacity: 0.55,
+                })
+                .addTo(map)
+                .bindPopup(c.name + " (" + c.count + " students)");
             });
         });
 </script>

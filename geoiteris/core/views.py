@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.db.models import Count
 from .models import College
 
 
@@ -11,6 +12,7 @@ def college_list(request):
             'location': c.location,
             'latitude': c.latitude,
             'longitude': c.longitude,
+            'count': c.student_count,
         })
     return JsonResponse(data, safe=False)
 
