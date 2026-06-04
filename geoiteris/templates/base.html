@@ -2,23 +2,57 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEOITERIS</title>
+
+
+    <script>
+        const t = localStorage.getItem('theme');
+        if (t) documentdocumentElement.setAttribute('data-theme', t);
+    </script>
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {% block head %}
+    {% endblock %}
 </head>
 
 <body>
 
     <nav>
-        <h2>GEOITERIS</h2>
-        <a href="/">MAP</a>
-        <a href="/">STUDENTS</a>
+        <a href="/" class="brand">GEOITERIS</a>
+        <ul>
+            <li><a href="/" id="nav-map">MAP</a></li>
+            <li><a href="/students" id="nav-students">STUDENTS</a></li>
+        </ul>
     </nav>
 
-    {% block content %}
-    {% endblock %}
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        (function() {
+            const path = window.location.pathname;
+            if (path === '/') {
+                document.getElementById('nav-map').classList.add('active');
+            } else if (path === '/students') {
+                document.getElementById('nav-students').classList.add('active');
+            }
+        })();
+    </script>
+
 </body>
 </html>
