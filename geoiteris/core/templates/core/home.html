@@ -22,8 +22,8 @@
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     const tiles={
-        light: L.tileLayer(TILE_LIGHT, {maxZoom: 18, attribution: ATTR}),
-        dark: L.tileLayer(TILE_DARK, {maxZoom: 18, attribution: ATTR}),
+        light: L.tileLayer(TILE_LIGHT, {tileSize: 512, zoomOffset: -1, maxZoom: 18, attribution: ATTR}),
+        dark: L.tileLayer(TILE_DARK, {tileSize: 512, zoomOffset: -1, maxZoom: 18, attribution: ATTR}),
     };
 
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
