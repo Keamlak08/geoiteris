@@ -1,17 +1,20 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from django.http import JsonResponse
 from .models import College
 
 
-@api_view(['GET'])
 def college_list(request):
-    date = []
+    data = []
     for c in College.objects.all():
-        date.append({
+        data.append({
             'name': c.name,
             'location': c.location,
             'latitude': c.latitude,
             'longitude': c.longitude,
         })
-    return Response(data)
+    return JsonResponse(data, safe=False)
+
+
+def home(request):
+    return render(request, 'core/home.html')
+
