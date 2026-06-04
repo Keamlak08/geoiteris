@@ -76,18 +76,56 @@ nav{
 }
 
 #theme-toggle{
-    background: none;
-    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
     cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--text-muted);
     padding: 0;
-    transition: color 0.1s;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    /* ocean base */
+    background: radial-gradient(circle at 50% 50%, #8ecfea 0%, #3b91c8 45%, #1a6aaa 100%);
+    transition: border-color 0.4s, box-shadow 0.4s;
 }
 
-#theme-toggle:hover{
-    color: var(--text);
+#theme-toggle::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 30% 28%, rgba(255,255,255,0.58) 0%, transparent 38%),
+        radial-gradient(ellipse at 52% 62%, rgba(68,148,58,0.52) 0%, transparent 30%),
+        radial-gradient(ellipse at 74% 36%, rgba(68,148,58,0.44) 0%, transparent 24%),
+        radial-gradient(ellipse at 36% 44%, rgba(68,148,58,0.38) 0%, transparent 20%);
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+#theme-toggle::after{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 27% 37%, rgba(255,224,90,0.9)  0%, transparent 8%),
+        radial-gradient(circle at 54% 30%, rgba(255,224,90,0.65) 0%, transparent 6%),
+        radial-gradient(circle at 70% 57%, rgba(255,224,90,0.8)  0%, transparent 7%),
+        radial-gradient(circle at 40% 66%, rgba(255,224,90,0.55) 0%, transparent 6%),
+        radial-gradient(circle at 74% 40%, rgba(255,224,90,0.5)  0%, transparent 5%),
+        radial-gradient(circle at 20% 53%, rgba(255,224,90,0.6)  0%, transparent 6%),
+        radial-gradient(circle at 60% 72%, rgba(255,224,90,0.45) 0%, transparent 5%),
+        radial-gradient(circle at 40% 40%, #1c274a, #0b1232 52%, #040a1e 100%);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+[data-theme="dark"] #theme-toggle::before{opacity: 0;}
+[data-theme="dark"] #theme-toggle::after{opacity: 1;}
+
+[data-theme="dark"] #theme-toggle{
+    border-color: #1e2a45;
+    box-shadow: 0 0 8px rgba(91,141,217,0.35);
 }
 
 main{

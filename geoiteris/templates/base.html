@@ -27,6 +27,7 @@
         <ul>
             <li><a href="/" id="nav-map">MAP</a></li>
             <li><a href="/students" id="nav-students">STUDENTS</a></li>
+            <li><button id="theme-toggle" aria-label="Toggle theme"></button></li>
         </ul>
     </nav>
 
@@ -46,11 +47,8 @@
 
         (function() {
             const path = window.location.pathname;
-            if (path === '/') {
-                document.getElementById('nav-map').classList.add('active');
-            } else if (path === '/students') {
-                document.getElementById('nav-students').classList.add('active');
-            }
+            if (path === '/') document.getElementById('nav-map').classList.add('active');
+            else if (path.startsWith('/students')) document.getElementById('nav-students').classList.add('active');
         })();
     </script>
 

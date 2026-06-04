@@ -11,21 +11,19 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    const map = L.map('map', {zoomControl: false}).setView([39, -98], 4);
+    const MAPTILER_KEY = 'Mo9jRmaI8uBBDdKKmtvt';
 
-    L.control.zoom({position: 'bottomright'}).addTo(map);
+    const TILE_LIGHT = `https://api.maptiler.com/maps/outdoor-v2/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`;
+    const TILE_DARK  = `https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`;
 
-    const ATTR = '© <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors © <a href="https://carto.com/attributions">CARTO</a>';
+    const ATTR = '© <a href="https://www.maptiler.com/copyright/">MapTiler</a> · © <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors';
+
+    const map = L.map('map', { zoomControl: false }).setView([39, -98], 4);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     const tiles={
-        light: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            maxZoom: 18,
-            attribution: ATTR,
-        }),
-        dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            maxZoom: 18,
-            attribution: ATTR,
-        }),
+        light: L.tileLayer(TILE_LIGHT, {maxZoom: 18, attribution: ATTR}),
+        dark: L.tileLayer(TILE_DARK, {maxZoom: 18, attribution: ATTR}),
     };
 
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
@@ -33,7 +31,7 @@
 
     document.getElementById('theme-toggle').addEventListener('click', function(){
         const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'darl' ? 'light' : 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
 
         map.removeLayer(tiles[current]);
         tiles[next].addTo(map);
