@@ -1,3 +1,11 @@
+html{
+    scroll-behavior: smooth;
+}
+
+main{
+    width: 100%;
+}
+
 :root{ 
     --bg: #f5f4f0;
     --text: #1a1a1a;
@@ -109,15 +117,6 @@ nav{
 [data-theme="dark"] .globe-day  { opacity: 0; }
 [data-theme="dark"] .globe-night { opacity: 1; }
 
-main{
-    width: 100%;
-}
-
-#map{
-    height: calc(100vh - var(--nav-h));
-    width: 100%;
-}
-
 /* LEAFLET OVERRIDE */
 
 .leaflet-popup-content-wrapper{
@@ -151,4 +150,74 @@ main{
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.7rem;
     color: var(--text-muted);
+}
+
+/* Hero */
+
+.hero{
+    min-height: calc(100vh - var(--nav-h));
+}
+
+.hero-title{
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: clamp(2.8rem, 10vw, 7.5rem);
+    letter-spacing: 0.04em;
+    color: var(--text);
+    line-height: 1;
+}
+
+.hero-sub{
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 380px;
+    line-height: 1.6;
+}
+
+
+.stat{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.stat strong{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.75rem;
+    font-weight: 60;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.stat span{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+
+.map-sect{
+    height: 100vh;
+    position: relative;
+}
+
+.map-label{
+    position: absolute;
+    top: 1.25rem;
+    left: 1.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size:0.65rem;
+    letter-spacing: 0.12em;
+    text-transform:  uppercase;
+    color: var(--text-muted);
+    z-index:500;
+    pointer-events: none;
+}
+
+#map{
+    height: 100%;
+    width: 100%;
 }
