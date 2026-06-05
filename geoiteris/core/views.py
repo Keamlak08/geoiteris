@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.db.models import Count
-from .models import College
+from django.db.models import Count, Min, Max
+from .models import College, Student
 
 
 def college_list(request):
@@ -18,5 +18,23 @@ def college_list(request):
 
 
 def home(request):
-    return render(request, 'core/home.html')
+    years = Student.objects.aggregate(
+        min_year=Min('graduation_year'),
+        max_year=Max('graduation_year')
+    )
+    min_y, max_y = years['min_year'], years['max_year']
+
+    if min_y and max_y:
+        year_range = str(min_y) + '-' + str(max_y)
+    else:
+        year_range = None
+
+    context={
+        'student_count': Student.objects.count(),
+        'college_count': College.objects.count(),
+        'github_count': Student.objects.exclude(github='').exclude(github=None).count(),
+        'year_range': year_range,
+    }
+
+    return render(request, 'core/home.html', context)
 

@@ -1,12 +1,53 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 {% endblock %}
 
 {% block content %}
 
-<div id="map"></div>
+<section class="hero">
+    <h1>GEOITERIS</h1>
+    <p class="hero-subtitle">a map of where GHC's CS students ended up.</p>
+
+    {% if student_count %}
+    <div class="stats">
+        <div class="stat">
+            <strong>{{ student_count }}</strong>
+            <span>students</span>
+        </div>
+
+        <div class="stat">
+            <strong>{{ college_count }}</strong>
+            <span>colleges</span>
+        </div>
+
+        {% if year_range %}
+        <div class="stat">
+            <strong>{{ year_range }}</strong>
+            <span>grad years</span>
+        </div>
+        {% endif %}
+
+        {% if github_count %}
+        <div class="stat">
+            <strong>{{ github_count }}</strong>
+            <span>on github</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <a href="#map-sect" class="scroll-cue">the map</a>
+</section>
+
+
+<section class="map-sect" id="map=sect">
+    <span class="map-label">
+        GHC to US colleges
+    </span>
+    <div id="map"></div>
+</section>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
@@ -36,6 +77,13 @@
         map.removeLayer(tiles[current]);
         tiles[next].addTo(map);
     });
+
+    new IntersectionObserver(function (entries, obs) {
+        if (entries[0].isIntersecting) {
+            map.invalidateSize();
+            obs.disconnect();
+        }
+    }, {threshold: 0.1}).observe(document.getElementById('map-section'));
 
     fetch('api/colleges/')
         .then(res => res.json())
