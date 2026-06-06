@@ -1,3 +1,27 @@
+@font-face {
+  font-family: 'Phantom Sans';
+  src:
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff')
+      format('woff'),
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2')
+      format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Phantom Sans';
+  src:
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff')
+      format('woff'),
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff2')
+      format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 html{
     scroll-behavior: smooth;
 }
@@ -124,7 +148,7 @@ nav{
     color: var(--text);
     border-radius: 2px;
     box-shadow: none;
-    boarder: 1px solid var(--boarder);
+    border: 1px solid var(--border);
 }
 
 .leaflet-popup-tip{
@@ -156,11 +180,18 @@ nav{
 
 .hero{
     min-height: calc(100vh - var(--nav-h));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    gap: 1.25rem;
 }
 
 .hero-title{
     font-family: 'IBM Plex Mono', monospace;
-    font-weight: 600;
+    font-weight: bold;
     font-size: clamp(2.8rem, 10vw, 7.5rem);
     letter-spacing: 0.04em;
     color: var(--text);
@@ -168,6 +199,7 @@ nav{
 }
 
 .hero-sub{
+    font-family: 'Phantom Sans', system-ui, sans-serif;
     font-size: 1rem;
     color: var(--text-muted);
     max-width: 380px;

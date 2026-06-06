@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -9,24 +9,24 @@
 
     <script>
         const t = localStorage.getItem('theme');
-        if (t) documentdocumentElement.setAttribute('data-theme', t);
+        if (t) document.documentElement.setAttribute('data-theme', t);
     </script>
 
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    {% block head %}
-    {% endblock %}
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block head %}{% endblock %}
 </head>
 
 <body>
 
     <nav>
-        <a href="/" class="brand">GEOITERIS</a>
-        <ul>
+        <a href="/" class="nav-brand">GEOITERIS</a>
+        <ul class="nav-links">
             <li><a href="/" id="nav-map">MAP</a></li>
-            <li><a href="/students" id="nav-students">STUDENTS</a></li>
+            <li><a href="/students/" id="nav-students">STUDENTS</a></li>
             <li>
                 <button id="theme-toggle" aria-label="Toggle theme">
                     <svg viewBox="0 0 32 32" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
@@ -64,7 +64,6 @@
         document.getElementById('theme-toggle').addEventListener('click', function() {
             const current = document.documentElement.getAttribute('data-theme');
             const next = current === 'dark' ? 'light' : 'dark';
-
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
         });

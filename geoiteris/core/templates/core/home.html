@@ -7,8 +7,8 @@
 {% block content %}
 
 <section class="hero">
-    <h1>GEOITERIS</h1>
-    <p class="hero-subtitle">a map of where GHC's CS students ended up.</p>
+    <h1 class="hero-title">GEOITERIS</h1>
+    <p class="hero-sub">a map of where GHC's CS students ended up.</p>
 
     {% if student_count %}
     <div class="stats">
@@ -57,7 +57,12 @@
 
     const ATTR = '© <a href="https://www.maptiler.com/copyright/">MapTiler</a> · © <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors';
 
-    const map = L.map('map', { zoomControl: false }).setView([39, -98], 4);
+    const map = L.map('map', { 
+        zoomControl: false,
+        minZoom: 3,
+        maxBounds: [[15, -170], [75, -50]],
+        maxBoundsViscosity: 1,
+    }).setView([39, -98], 4);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     const tiles={
