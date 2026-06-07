@@ -47,6 +47,35 @@
     <div id="map"></div>
 </section>
 
+
+<section class="students-section" id="students-section">
+    <div class="section-header">
+        <h2 class="section-title">the students</h2>
+        {% if student_count %}
+        <p class="section-sub">{{ student_count }} CS graduates from GHC</p>
+        {% endif %}
+    </div>
+
+    <ul class="student-list">
+        {% for student in students %}
+        <li class="student-row">
+            <span class="student-name">{{ student.name }}</span>
+            <span class="student-meta">
+                {{ student.college.name }}
+                <span class="dot">·</span>
+                {{ student.graduation_year }}
+                {% if student.github %}
+                <a href="{{ student.github }}" target="_blank" rel="noopener" class="student-gh">↗</a>
+                {% endif %}
+            </span>
+        </li>
+        {% empty %}
+        <li class="student-empty">no students yet</li>
+        {% endfor %}
+    </ul>
+</section>
+
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>

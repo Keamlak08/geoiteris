@@ -12,7 +12,7 @@ def college_list(request):
             'location': c.location,
             'latitude': c.latitude,
             'longitude': c.longitude,
-            'count': c.student_count,
+            'student_count': c.student_count,
         })
     return JsonResponse(data, safe=False)
 
@@ -34,6 +34,7 @@ def home(request):
         'college_count': College.objects.count(),
         'github_count': Student.objects.exclude(github='').exclude(github=None).count(),
         'year_range': year_range,
+        'students' : Student.objects.select_related('college').order_by('-graduation_year', 'name'),
     }
 
     return render(request, 'core/home.html', context)
