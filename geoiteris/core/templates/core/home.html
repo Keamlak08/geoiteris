@@ -40,7 +40,7 @@
 </section>
 
 
-<section class="map-sect" id="map=sect">
+<section class="map-sect" id="map-section">
     <span class="map-label">
         GHC to US colleges
     </span>
@@ -117,13 +117,13 @@
         }
     }, {threshold: 0.1}).observe(document.getElementById('map-section'));
 
-    fetch('api/colleges/')
+    fetch('/api/colleges/')
         .then(res => res.json())
         .then(data => {
             data.forEach(c => {
                 const radius = c.student_count > 0 ? Math.max(8, c.student_count * 6) : 6;
-                const count = c.student_count === 1 ? '1 student' : '${c.student} students';
-                const popup = '<span class="popup-name">${c.name}</span><span class="popup-detail">${c.location} - ${count}</span>';
+                const count = c.student_count === 1 ? '1 student' : `${c.student_count} students`;
+                const popup = `<span class="popup-name">${c.name}</span><span class="popup-detail">${c.location} · ${count}</span>`;
 
                 L.circleMarker([c.latitude, c.longitude], {
                     radius: radius,

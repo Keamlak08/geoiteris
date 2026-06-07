@@ -6,7 +6,7 @@ from .models import College, Student
 
 def college_list(request):
     data = []
-    for c in College.objects.all():
+    for c in College.objects.annotate(student_count=Count('student')):
         data.append({
             'name': c.name,
             'location': c.location,
