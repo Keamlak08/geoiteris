@@ -81,8 +81,8 @@
 <script>
     const MAPTILER_KEY = 'Mo9jRmaI8uBBDdKKmtvt';
 
-    const TILE_LIGHT = `https://api.maptiler.com/maps/outdoor-v2/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`;
-    const TILE_DARK  = `https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`;
+    const TILE_LIGHT = `https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`;
+    const TILE_DARK  = `https://api.maptiler.com/maps/streets-v2-dark/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`;
 
     const ATTR = '© <a href="https://www.maptiler.com/copyright/">MapTiler</a> · © <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors';
 
@@ -95,8 +95,8 @@
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     const tiles={
-        light: L.tileLayer(TILE_LIGHT, {tileSize: 512, zoomOffset: -1, maxZoom: 18, attribution: ATTR}),
-        dark: L.tileLayer(TILE_DARK, {tileSize: 512, zoomOffset: -1, maxZoom: 18, attribution: ATTR}),
+        light: L.tileLayer(TILE_LIGHT, {maxZoom: 18, attribution: ATTR}),
+        dark: L.tileLayer(TILE_DARK, {maxZoom: 18, attribution: ATTR}),
     };
 
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';

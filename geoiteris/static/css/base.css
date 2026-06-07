@@ -104,6 +104,14 @@ body{
 
 /* LEAFLET OVERRIDE */
 
+.leaflet-container{
+    background: #111827;
+}
+
+[data-theme="dark"] .leaflet-container{
+    background: #111827;
+}
+
 .leaflet-popup-content-wrapper{
     background: var(--bg);
     color: var(--text);
