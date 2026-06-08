@@ -5,6 +5,7 @@ class College(models.Model):
     location = models.CharField(max_length=100)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    logo_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.name

@@ -5,14 +5,16 @@ from .models import College, Student
 
 
 def college_list(request):
+    colleges = College.objects.annotate(student_count=Count('student'))
     data = []
-    for c in College.objects.annotate(student_count=Count('student')):
+    for c in colleges:
         data.append({
             'name': c.name,
             'location': c.location,
             'latitude': c.latitude,
             'longitude': c.longitude,
             'student_count': c.student_count,
+            'logo_url' : c.logo_url or '',
         })
     return JsonResponse(data, safe=False)
 
