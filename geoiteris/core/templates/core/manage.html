@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 3rem auto; padding: 0 2rem;">
+
+    <h1>manage</h1>
+    <a href="/">back</a>
+
+    <hr>
+
+    <h2>add a college</h2>
+
+    <div>
+        <input type="text" id="uni-name">
+        <button type="button" id="lookup-btn">find</button>
+    </div>
+
+    <div id="lookup-result">
+        <img id="logo-preview" src="" alt="">
+        <span id="lookup-name"></span><br>
+        <small id="lookup-location"></small><br>
+        <small id="lookup-coords"></small>
+    </div>
+
+    <form method="POST" action="{% url 'add-college' %}">
+        {% csrf_token %}
+        <input type="hidden" name="name"      id="f-name">
+        <input type="hidden" name="location"  id="f-location">
+        <input type="hidden" name="latitude"  id="f-lat">
+        <input type="hidden" name="longitude" id="f-lng">
+        <input type="hidden" name="logo_url"  id="f-logo">
+        <button type="submit" id="save-btn" disabled>save college</button>
+    </form>
+
+    <hr>
+
+    <h2>add a student</h2>
+
+    <form method="POST" action="{% url 'add-student' %}">
+        {% csrf_token %}
+        <p>
+            <label>name<br>
+            <input type="text" name="name" required></label>
+        </p>
+        <p>
+            <label>graduation year<br>
+            <input type="number" name="graduation_year" required></label>
+        </p>
+        <p>
+            <label>college<br>
+            <select name="college">
+                {% for college in colleges %}
+                <option value="{{ college.id }}">{{ college.name }}</option>
+                {% endfor %}
+            </select></label>
+        </p>
+        <p>
+            <label>github (optional)<br>
+            <input type="url" name="github"></label>
+        </p>
+        <p>
+            <label>contact email (optional)<br>
+            <input type="email" name="contact"></label>
+        </p>
+        <button type="submit">add student</button>
+    </form>
+
+</div>
+
+
+<script>
+    const lookupBtn = document.getElementById('lookup-btn');
+    const uniInput  = document.getElementById('uni-name');
+    const resultBox = document.getElementById('lookup-result');
+    const saveBtn   = document.getElementById('save-btn');
+
+    async function lookup() {
+        const name = uniInput.value.trim();
+        if (!name) return;
+
+        lookupBtn.textContent = 'searching…';
+        lookupBtn.disabled = true;
+
+        try {
+            // Nominatim first — reliable, doesn't fail if Hipolabs is down
+            const nomRes = await fetch(
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(name)}&format=json&limit=1&addressdetails=1`,
+                { headers: { 'Accept-Language': 'en' } }
+            );
+            const nomData = await nomRes.json();
+            const place   = nomData[0];
+
+            if (!place) {
+                lookupBtn.textContent = 'not found — try again';
+                lookupBtn.disabled = false;
+                return;
+            }
+
+            const addr     = place.address;
+            const city     = addr.city || addr.town || addr.village || '';
+            const state    = addr.state || '';
+            const location = [city, state].filter(Boolean).join(', ');
+            const lat      = parseFloat(place.lat).toFixed(5);
+            const lng      = parseFloat(place.lon).toFixed(5);
+
+            // Try Hipolabs for domain/logo separately — skip if unavailable
+            let logoUrl  = '';
+            let dispName = name;
+            try {
+                const hipoRes  = await fetch(`https://universities.hipolabs.com/search?name=${encodeURIComponent(name)}`);
+                const hipoData = await hipoRes.json();
+                const uni      = hipoData[0];
+                if (uni?.domains?.[0]) logoUrl  = `https://www.google.com/s2/favicons?domain=${uni.domains[0]}&sz=256`;
+                if (uni?.name)         dispName = uni.name;
+            } catch {
+                // Hipolabs unavailable — continue without logo
+            }
+
+            document.getElementById('f-name').value     = dispName;
+            document.getElementById('f-location').value = location;
+            document.getElementById('f-lat').value      = lat;
+            document.getElementById('f-lng').value      = lng;
+            document.getElementById('f-logo').value     = logoUrl;
+
+            document.getElementById('lookup-name').textContent     = dispName;
+            document.getElementById('lookup-location').textContent = location;
+            document.getElementById('lookup-coords').textContent   = `${lat}, ${lng}`;
+
+            if (logoUrl) {
+                document.getElementById('logo-preview').src          = logoUrl;
+                document.getElementById('logo-preview').style.display = 'inline';
+            }
+
+            resultBox.style.display = 'block';
+            saveBtn.disabled        = false;
+            lookupBtn.textContent   = 'find';
+            lookupBtn.disabled      = false;
+
+        } catch (err) {
+            console.error('Lookup error:', err);
+            lookupBtn.textContent = 'error. try again';
+            lookupBtn.disabled    = false;
+        }
+    }
+
+    lookupBtn.addEventListener('click', lookup);
+    uniInput.addEventListener('keydown', e => { if (e.key === 'Enter') lookup(); });
+</script>
+
+{% endblock %}

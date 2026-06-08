@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.db.models import Count, Min, Max
 from .models import College, Student
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 def college_list(request):
@@ -41,3 +42,33 @@ def home(request):
 
     return render(request, 'core/home.html', context)
 
+@staff_member_required
+def manage(request):
+    context = {
+        'colleges': College.objects.order_by('name'),
+    }
+    return render(request, 'core/manage.html', context)
+
+@staff_member_required
+def add_college(request):
+    if request.method == 'POST':
+        College.objects.create(
+            name=request.POST.get('name'),
+            location=request.POST.get('location'),
+            latitude=float(request.POST.get('latitude', 0)),
+            longitude=float(request.POST.get('longitude', 0)),
+            logo_url=request.POST.get('logo_url') or None,
+        )
+    return redirect('manage')
+
+@staff_member_required
+def add_student(request):
+    if request.method == 'POST':
+        Student.objects.create(
+            name=request.POST.get('name'),
+            graduation_year=int(request.POST.get('graduation_year')),
+            college_id=int(request.POST.get('college')),
+            github=request.POST.get('github') or None,
+            contact=request.POST.get('contact') or None,
+        )
+    return redirect('manage')
