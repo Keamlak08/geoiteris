@@ -24,6 +24,8 @@
 
 html{
     scroll-behavior: smooth;
+    background: var(--bg);
+    transition: background 0.15s;
 }
 
 main{
